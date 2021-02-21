@@ -1,5 +1,4 @@
 # G0Q9P2UJ2
-# PLLJRRY2
 
 import requests
 from bs4 import BeautifulSoup
@@ -11,10 +10,21 @@ import time
 tol = None
 current = None
 
+url = "https://notify-api.line.me/api/notify"
+access_token = '*********************************'
+headers = {'Authorization': 'Bearer ' + access_token}
+
 # コンソールタグ入力
 playertag = input("プレイヤータグを入力してください：")
 
 target_url = 'https://royaleapi.com/player/' + playertag + '/battles'
+
+
+# LINE通知
+def message():
+    message = '対戦が更新されました！'
+    payload = {'message': message}
+    r = requests.post(url, headers=headers, params=payload,)
 
 # 最新のバトルを取得
 def job():
@@ -34,8 +44,9 @@ def job():
     else:
         tol = current
         # 通知システム
-        message = '対戦が更新されました！'
-        os.system("osascript -e 'display dialog\" {}\"'".format(message))
+        message()
+        # message = '対戦が更新されました！'
+        # os.system("osascript -e 'display dialog\" {}\"'".format(message))
     
 schedule.every(10).minutes.do(job)
         
